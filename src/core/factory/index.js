@@ -16,6 +16,7 @@ export default {
     const gameObjectData = this.data[type];
     if (! gameObjectData) throw new Error('No such GameObject type: ', type);
     const o = new GameObject(x, y, r, gameObjectData);
+    o.type = type;
     this.objects.push(o);
     return o;
   }

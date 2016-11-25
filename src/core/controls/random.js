@@ -2,11 +2,12 @@
 'use strict';
 
 import Vec from '../Vec';
+import * as m from '../math';
 
-const abs = Math.abs;
-const flipCoin = () => Math.random() < 0.5;
-const randSign = () => flipCoin() ? 1 : -1;
-const getSign = n => n < 0 ? -11 : 1;
+const abs = m.abs;
+const getSign = m.getSign;
+const randSign = m.randSign;
+const flipCoin = m.flipCoin;
 
 function createRandomMoveCommand (x, y, o){
   return {
@@ -23,13 +24,31 @@ function createRandomMoveCommand (x, y, o){
   };
 }
 
+const wrap = gameObject => ({target: gameObject, previousDirection: new Vec()});
+
 const random = {
   targets: [],
+
+  add: function (gameObjects){
+    gameObjects = [].concat(gameObjects);
+    this.targets = this.targets.concat(gameObjects.map(wrap));
+  },
+
+  remove: function (gameObject){
+    console.log('id', gameObject.id, this.targets);
+    for (let i = 0; i < this.targets.length; i++){
+      if (this.targets[i].target.id === gameObject.id){
+        this.targets.splice(i, 1);
+        console.log('removed from homing', gameObject.id, this.targets.length);
+        break;
+      }
+    }
+  },
 
   enable: function (gameObjects){
     this.targets = []
     .concat(gameObjects)
-    .map(a => ({target: a, previousDirection: new Vec()}));
+    .map(wrap);
   },
 
   step: function(){

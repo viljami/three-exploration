@@ -3,7 +3,6 @@
 
 import GraphicsBody from './body';
 import requestAnimationFrame from './requestAnimationFrame';
-import gameObjectFactory from '../factory/';
 
 const PI2 = Math.PI * 2;
 
@@ -66,7 +65,6 @@ const graphics = {
     this.isRunning = true;
     const frame = () => {
       if (this.isRunning) requestAnimationFrame(frame);
-      gameObjectFactory.objects.forEach(o => o.update());
       graphics.draw();
     };
     frame();

@@ -6,11 +6,12 @@ import Vec from '../Vec';
 let id = 0;
 const getId = () => ++id;
 
-export default function Body(x, y, r, isStatic = false){
+export default function Body(x, y, r, isStatic = false, isSensor = false){
   this.id = getId();
   this.position = new Vec(x, y);
   this.velocity = new Vec(0, 0);
   this.r = r;
   this.collisions = [];
   this.isStatic = isStatic;
+  this.isSensor = isSensor;
 }
