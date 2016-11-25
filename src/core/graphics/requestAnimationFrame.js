@@ -4,8 +4,9 @@
 'use strict';
 
 (function() {
+  const vendors = ['ms', 'moz', 'webkit', 'o'];
   let lastTime = 0;
-  let vendors = ['ms', 'moz', 'webkit', 'o'];
+
   for (let x = 0; x < vendors.length && ! window.requestAnimationFrame; ++x) {
     window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
     window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
@@ -14,9 +15,9 @@
 
   if (! window.requestAnimationFrame){
     window.requestAnimationFrame = function(callback) {
-      let currTime = new Date().getTime();
-      let dt = Math.max(0, 16 - (currTime - lastTime));
-      let id = window.setTimeout(() => callback(currTime + dt), dt);
+      const currTime = Date.now();
+      const dt = Math.max(0, 16 - (currTime - lastTime));
+      const id = window.setTimeout(() => callback(currTime + dt), dt);
       lastTime = currTime + dt;
       return id;
     };

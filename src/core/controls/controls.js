@@ -1,7 +1,23 @@
 
 'use strict';
 
-const control = {};
+const control = {
+  start: function(){
+    if (this.isRunning) return;
+    this.isRunning = true;
+    Object.keys(control).forEach(a => {
+      if (typeof control[a] === 'object') control[a].start();
+    });
+  },
+
+  stop: function(){
+    if (! this.isRunning) return;
+    this.isRunning = false;
+    Object.keys(control).forEach(a => {
+      if (typeof control[a] === 'object') control[a].stop();
+    });
+  }
+};
 
 function keyDown (e){
   control.keyboard.keys[e.keyCode] = true;

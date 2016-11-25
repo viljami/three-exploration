@@ -3,13 +3,8 @@
 
 import controls from './controls';
 
-const mouse = controls.mouse;
 const keyboard = controls.keyboard;
 const keys = keyboard.keys;
-
-function isClick (a){
-  return a.isDown || a.endTime - a.startTime < 100;
-}
 
 function createMoveCommand(x, y, gameObjects){
   return {
@@ -27,11 +22,13 @@ function createMoveCommand(x, y, gameObjects){
 //   };
 // }
 
-const manualControl = {
+const manual = {
   targets: [],
+
   enable: function (gameObjects){
     this.targets = [].concat(gameObjects);
   },
+
   step: function(){
     const commands = [];
     let x = 0;
@@ -41,11 +38,12 @@ const manualControl = {
     if (keys[39]) x += 1;
     if (keys[40]) y += 1;
     if (x || y) commands.push(createMoveCommand(x, y, this.targets));
+    commands.forEach(c => c.execute());
+  },
 
-    if (isClick(mouse)){
-      console.log('mouse click at', mouse.startX, mouse.startY);
-    }
+  start: function(){
+    controls.start();
   }
 };
 
-export default manualControl;
+export default manual;
