@@ -21,7 +21,7 @@ function move(body){
 }
 
 function isSameGroup(a, b){
-  return a.group && b.group && a.group === b.group;
+  return !! a.groups.filter(g => b.hasGroup(g)).length;
 }
 
 const physics = {

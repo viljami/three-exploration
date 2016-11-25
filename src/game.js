@@ -17,12 +17,14 @@ let ais = [];
 Game.prototype.start = function(){
   graphics.createLayer();
 
-  const human = factory.create(100, 260, 10, 'human');
+  const human = factory.create(100, 360, 10, 'human');
   manualControl.enable(human);
 
   for (let i = 0; i < 5; i++){
-    for (let j = 0; j < 5; j++){
-      const zombie = factory.create(100 + i * 20, 200 + j * 20, 5, 'zombie');
+    for (let j = 0; j < 1; j++){
+      const zombie = factory.create(100 + i * 30, 200 + j * 30, 5, 'zombie');
+      zombie.sensor.addGroup('zombie');
+      zombie.body.addGroup('zombie');
       ais.push(new ZombieAI(zombie));
     }
   }

@@ -35,11 +35,9 @@ const random = {
   },
 
   remove: function (gameObject){
-    console.log('id', gameObject.id, this.targets);
     for (let i = 0; i < this.targets.length; i++){
       if (this.targets[i].target.id === gameObject.id){
         this.targets.splice(i, 1);
-        console.log('removed from homing', gameObject.id, this.targets.length);
         break;
       }
     }

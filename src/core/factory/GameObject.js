@@ -26,7 +26,9 @@ export default function GameObject(x, y, r, data){
 
   if (this.perception){
     this.sensor = physics.create(x, y, this.perception, false, true);
-    this.sensor.group = getGroup(this);
+    const group = getGroup(this);
+    this.sensor.addGroup(group);
+    this.body.addGroup(group);
   }
 }
 
@@ -40,6 +42,6 @@ GameObject.prototype.move = function(x, y){
 };
 
 GameObject.prototype.update = function(){
-  this.sensor.position.copy(this.body.position);
+  if (this.sensor) this.sensor.position.copy(this.body.position);
   this.graphics.update(this.body.position.x, this.body.position.y, this.body.r);
 };

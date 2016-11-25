@@ -23,16 +23,21 @@ ZombieAI.prototype.update = function(){
 
     if (isRoaming(this.state) || ! this.state){
       this.state = 'attack';
-        console.log(this.state);
       randomControl.remove(this.gameObject);
       homingControl.add([this.gameObject, body]);
     }
   } else {
     if (! isRoaming(this.state) || ! this.state){
       this.state = 'roam';
-      console.log(this.state);
+      this.roamStartTime = Date.now();
       homingControl.remove(this.gameObject);
       randomControl.add(this.gameObject);
+    } else if (
+        this.roamStartTime &&
+        Date.now() - this.roamStartTime > 5000
+    ){
+      this.state = 'standingComa';
+      randomControl.remove(this.gameObject);
     }
   }
 };
