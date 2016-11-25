@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --content-base src/",
+    "start": "webpack-dev-server --progress --colors --content-base src/",
     "build": "webpack --progress --colors"
   },
   "author": "viljami",
@@ -17,6 +17,8 @@
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
     "webpack": "^1.13.3"
   }
 }
