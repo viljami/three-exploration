@@ -1,11 +1,13 @@
 
 'use strict';
 
+import factory from './core/factory/';
 import Game from './game';
 
-export default function App (){
+export default function App (options){
   this.name = 'Herd\'m';
-  this.game = new Game();
+  factory.setData(options.data);
+  this.game = new Game(options);
 }
 
 App.prototype.start = function (){

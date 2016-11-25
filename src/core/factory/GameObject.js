@@ -4,16 +4,16 @@
 import physics from '../physics/';
 import graphics from '../graphics/';
 
-export default function GameObject(x, y, r, color){
+export default function GameObject(x, y, r, data){
   this.body = physics.create(x, y, r);
-  this.graphics = graphics.create(x, y, r, color);
-  this.health = 100;
-  this.armor = 10;
-  this.weapons = [
+  this.graphics = graphics.create(x, y, r, data.color);
+  this.health = data.health || 100;
+  this.armor = data.armor || 10;
+  this.weapons = data.weapons || [
     {type:'fists', damage: 10, isPiercing: false, isSpread: false}
   ];
   this.activeWeaponIndex = 0;
-  this.topSpeed = 6;
+  this.topSpeed = data.topSpeed;
 }
 
 GameObject.prototype.move = function(x, y){

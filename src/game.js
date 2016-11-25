@@ -2,8 +2,8 @@
 'use strict';
 
 import manualControl from './core/controls/manual';
-import humanFactory from './human.factory';
-import zombieFactory from './zombie.factory';
+import randomControl from './core/controls/random';
+import factory from './core/factory/';
 
 import graphics from './core/graphics/';
 import physics from './core/physics/';
@@ -13,12 +13,12 @@ export default function Game(){}
 Game.prototype.start = function(){
   graphics.createLayer();
 
-  const human = humanFactory.create(260, 360, 10);
+  const human = factory.create(260, 360, 10, 'human');
   manualControl.enable(human);
-  zombieFactory.create(200, 300, 50);
+  randomControl.enable(factory.create(200, 300, 50, 'zombie'));
 
   this.step = this.step.bind(this);
-  this.stepInterval = setInterval(this.step, 1000 / 10);
+  this.stepInterval = setInterval(this.step, 1000 / 60);
 
   graphics.setCameraTarget(human.graphics);
   graphics.start();
@@ -27,5 +27,6 @@ Game.prototype.start = function(){
 
 Game.prototype.step = function(){
   manualControl.step();
+  randomControl.step();
   physics.step();
 };
