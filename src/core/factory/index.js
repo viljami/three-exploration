@@ -19,5 +19,21 @@ export default {
     o.type = type;
     this.objects.push(o);
     return o;
+  },
+
+  remove: function(gameObject){
+
+    if (isFinite(gameObject)){ // Number
+      this.objects[gameObject]._destroy();
+      return this.objects.splice(gameObject, 1);
+    }
+
+    gameObject._destroy();
+
+    for (let i = 0; i < this.objects.length; i++){
+      if (this.objects[i] === gameObject){
+        return this.objects.splice(i, 1);
+      }
+    }
   }
 };

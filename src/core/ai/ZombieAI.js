@@ -5,13 +5,14 @@ import randomControl from '../controls/random';
 import homingControl from '../controls/homing';
 
 const ROAM_TIME = 10500;
-const ATTACK_TIME = 6500;
+const ATTACK_TIME = 3500;
 
 const isHuman = body => body.userData && body.userData.type !== 'zombie';
 const getHuman = collisions => collisions.find(o => isHuman(o.other));
 
 function Coma (gameObject){
   this.gameObject = gameObject;
+  this.gameObject.graphics.color = 'rgba(25,0,0,0.7)';
   this.startTime = Date.now();
   randomControl.remove(this.gameObject);
   homingControl.remove(this.gameObject);
@@ -35,6 +36,7 @@ Coma.prototype.update = function(){
 function Roam (gameObject){
   this.startTime = Date.now();
   this.gameObject = gameObject;
+  this.gameObject.graphics.color = 'rgba(50,0,0,0.7)';
   randomControl.add(this.gameObject);
   homingControl.remove(this.gameObject);
 }
@@ -66,12 +68,19 @@ function Attack (gameObject, targetBody){
   this.startTime = Date.now();
   this.targetBody = targetBody;
   this.gameObject = gameObject;
+  this.gameObject.graphics.color = 'rgba(75,0,0,0.7)';
   randomControl.remove(this.gameObject);
   homingControl.add(this.gameObject, this.targetBody);
 }
 
 Attack.prototype.update = function(){
+  const humanCollision = getHuman(this.gameObject.body.collisions);
+  if (humanCollision){
+    humanCollision.other.userData.inflictDamage(this.gameObject);
+  }
+
   const sensor = this.gameObject.sensor;
+  this.gameObject.graphics.color = 'rgba(75,0,0,0.7)';
 
   if (! sensor.collisions.length){
     return this.isLosingFocus() ? new Roam(this.gameObject) : this;
@@ -81,6 +90,7 @@ Attack.prototype.update = function(){
     this.startTime = Date.now();
     return this;
   }
+
   return this.isLosingFocus() ? new Roam(this.gameObject) : this;
 };
 

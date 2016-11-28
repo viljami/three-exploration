@@ -11,6 +11,7 @@ const getGroup = gameObject => gameObject.id;
 export default function GameObject(x, y, r, data){
   this.id = getId();
   this.body = physics.create(x, y, data.r || r);
+  this.body.userData = this;
   this.body.group = getGroup(this);
   this.graphics = graphics.create(x, y, r, data.color);
   this.weapons = data.weapons || [
@@ -40,3 +41,15 @@ GameObject.prototype.update = function(){
   if (this.sensor) this.sensor.position.copy(this.body.position);
   this.graphics.update(this.body.position.x, this.body.position.y, this.body.r);
 };
+
+GameObject.prototype.inflictDamage = function(gameObject){
+  this.health -= gameObject.damage;
+};
+
+GameObject.prototype._destroy = function(){
+  physics.remove(this.body);
+  graphics.remove(this.graphics);
+  if (this.sensor) physics.remove(this.sensor);
+};
+
+GameObject.prototype.isAlive = function(){ return this.health > 0; };

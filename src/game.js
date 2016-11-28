@@ -24,7 +24,6 @@ Game.prototype.start = function(){
     for (let j = 0; j < 5; j++){
       const zombie = factory.create(100 + i * 30, 200 + j * 30, 5, 'zombie');
       zombie.sensor.addGroup('zombie');
-      zombie.body.userData = zombie;
       ais.push(new ZombieAI(zombie));
     }
   }
@@ -43,5 +42,9 @@ Game.prototype.step = function(){
   homingControl.step();
   randomControl.step();
   physics.step();
-  factory.objects.forEach(o => o.update());
+
+  for(let i = 0; i < factory.objects.length; i++){
+    if (factory.objects[i].isAlive()) factory.objects[i].update();
+    else factory.remove(i);
+  }
 };

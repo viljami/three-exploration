@@ -57,8 +57,12 @@ const graphics = {
     return o;
   },
 
-  remove: function(id){
-    this.objects[-id] = undefined;
+  remove: function(graphic){
+    for (let i = 0; i < this.objects.length; i++){
+      if (this.objects[i] === graphic){
+        return this.objects.splice(i, 1);
+      }
+    }
   },
 
   start: function(){

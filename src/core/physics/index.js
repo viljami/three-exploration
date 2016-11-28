@@ -38,8 +38,12 @@ const physics = {
     return b;
   },
 
-  remove: function(id){
-    return this.objects.splive(id, 1);
+  remove: function(body){
+    for (let i = 0; i < this.objects.length; i++){
+      if (this.objects[i] === body){
+        return this.objects.splice(i, 1);
+      }
+    }
   },
 
   step: function(){
