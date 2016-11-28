@@ -20,8 +20,8 @@ const random = {
     this.targets = [].concat(pairs);
   },
 
-  add: function (pair){
-    this.targets.push(pair);
+  add: function (a, b){
+    this.targets.push([a, b]);
   },
 
   remove: function (gameObject){
