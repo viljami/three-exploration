@@ -15,6 +15,7 @@ export default function Body(x, y, r, isStatic = false, isSensor = false){
   this.isStatic = isStatic;
   this.isSensor = isSensor;
   this.groups = [];
+  this.userData = {};
 }
 
 Body.prototype.addGroup = function(group){

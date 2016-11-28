@@ -10,7 +10,7 @@ export default function Pulse(x, y, r, color){
   this.maxR = r;
   this.currentR = 1;
   this.speed = 1;
-};
+}
 
 Pulse.prototype.update = function(){
   this.currentR += this.speed;

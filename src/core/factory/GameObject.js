@@ -6,7 +6,7 @@ import graphics from '../graphics/';
 
 let id = 0;
 const getId = () => ++id;
-const getGroup = gameObject => 'go' + gameObject.id;
+const getGroup = gameObject => gameObject.id;
 
 export default function GameObject(x, y, r, data){
   this.id = getId();
@@ -17,16 +17,11 @@ export default function GameObject(x, y, r, data){
     {type:'fists', damage: 10, isPiercing: false, isSpread: false}
   ];
 
-  // this.health = data.health || 100;
-  // this.armor = data.armor || 10;
-  // this.activeWeaponIndex = 0;
-  // this.topSpeed = data.topSpeed;
-
   Object.keys(data).forEach(key => this[key] = data[key]);
 
   if (this.perception){
-    this.sensor = physics.create(x, y, this.perception, false, true);
     const group = getGroup(this);
+    this.sensor = physics.create(x, y, this.perception, false, true);
     this.sensor.addGroup(group);
     this.body.addGroup(group);
   }
