@@ -19,6 +19,7 @@ export default function GameObject(x, y, r, data){
   ];
 
   Object.keys(data).forEach(key => this[key] = data[key]);
+  this.maxHealth = this.health;
 
   if (this.perception){
     const group = getGroup(this);
@@ -26,6 +27,8 @@ export default function GameObject(x, y, r, data){
     this.sensor.addGroup(group);
     this.body.addGroup(group);
   }
+
+  this.healthBar = graphics.createUIComponent('healthBar', this);
 }
 
 GameObject.prototype.move = function(x, y){
@@ -49,6 +52,7 @@ GameObject.prototype.inflictDamage = function(gameObject){
 GameObject.prototype._destroy = function(){
   physics.remove(this.body);
   graphics.remove(this.graphics);
+  graphics.removeUIComponent(this.healthBar);
   if (this.sensor) physics.remove(this.sensor);
 };
 

@@ -4,25 +4,36 @@
 import GraphicsBody from './body';
 import requestAnimationFrame from './requestAnimationFrame';
 import FogOfWar from './Fogofwar';
+import HealthBar from './HealthBar';
 
 const PI2 = Math.PI * 2;
 let W = window.innerWidth;
 let H = window.innerHeight;
 
+let prevX = 0, prevY = 0, upperCorner = {x: 0, y: 0};
 function getCameraUpperLeftCorner(target){
-  return {
-    x: target.x + window.innerWidth / 2,
-    y: -target.y + window.innerHeight / 2
-  };
+  upperCorner.x = prevX;
+  upperCorner.y = prevY;
+  prevX = target.x + window.innerWidth / 2;
+  prevY = -target.y + window.innerHeight / 2;
+
+  return upperCorner;
 }
 
 const graphics = {
   layers: [],
   objects: [],
+  uiComponents: [],
   cameraTarget: undefined,
 
   addFog: function(radius){
     this.fog = new FogOfWar(radius);
+  },
+
+  createUIComponent: function(type, options){
+    const o = new HealthBar(options);
+    this.uiComponents.push(o);
+    return o;
   },
 
   createLayer: function(parentElement = document.body){
@@ -58,6 +69,7 @@ const graphics = {
       }
     });
 
+    this.uiComponents.forEach(o => o.draw(ctx, cameraCorner));
     this.fog.draw(ctx);
   },
 
@@ -79,6 +91,14 @@ const graphics = {
     }
   },
 
+  removeUIComponent: function(uiComponent){
+    for(let i = 0; i < this.uiComponents.length; i++){
+      if (this.uiComponents[i] === uiComponent){
+        return this.uiComponents.splice(i, 1);
+      }
+    }
+  },
+
   start: function(){
     this.isRunning = true;
     const frame = () => {
@@ -94,6 +114,7 @@ const graphics = {
 window.addEventListener('resize', function resize(){
   W = window.innerWidth;
   H = window.innerHeight;
+  graphics.fog.createMask(graphics.fog.r);
   graphics.layers.forEach(o => {
     o.canvas.width = W;
     o.canvas.height = H;

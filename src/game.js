@@ -9,6 +9,7 @@ import ZombieAI from './core/ai/ZombieAI';
 
 import graphics from './core/graphics/';
 import physics from './core/physics/';
+import {rand} from './core/math';
 
 export default function Game(){}
 
@@ -20,12 +21,17 @@ Game.prototype.start = function(){
   const human = factory.create(100, 560, 10, 'human');
   manualControl.enable(human);
 
+  let x = 100;
+  let y = 100;
   for (let i = 0; i < 10; i++){
+      x += 15 + rand(100);
     for (let j = 0; j < 10; j++){
-      const zombie = factory.create(100 + i * 60, 200 + j * 30, 5, 'zombie');
+      y += 15 + rand(100);
+      const zombie = factory.create(x + rand(20), y, 5, 'zombie');
       zombie.sensor.addGroup('zombie');
       ais.push(new ZombieAI(zombie));
     }
+    y = 100;
   }
 
   for (let i = 0; i < 10; i++){

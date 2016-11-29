@@ -6,13 +6,15 @@ export default function FogOfWar(r){
   this.createMask(r);
 }
 
-FogOfWar.prototype.createMask = function(r){
+FogOfWar.prototype.createMask = function (r){
   if (! this.image) this.image = document.createElement('canvas');
   let context = this.image.getContext('2d');
   const W = window.innerWidth;
   const H = window.innerHeight;
   this.image.width = W;
   this.image.height = H;
+
+  context.clearRect(0, 0, W, H);
 
   const gradient = context
   .createRadialGradient(W / 2, H / 2, r || this.r, W / 2, H / 2, 0);
