@@ -19,13 +19,8 @@ const control = {
   }
 };
 
-function keyDown (e){
-  control.keyboard.keys[e.keyCode] = true;
-}
-
-function keyUp (e){
-  control.keyboard.keys[e.keyCode] = false;
-}
+const keyDown = e => control.keyboard.keys[e.keyCode] = true;
+const keyUp = e => control.keyboard.keys[e.keyCode] = false;
 
 control.keyboard = {
   keys: [],
@@ -40,19 +35,19 @@ control.keyboard = {
   }
 };
 
-function mouseDown (e){
+const mouseDown = e => {
   control.mouse.startX = e.clientX;
   control.mouse.startY = e.clientY;
   control.mouse.isDown = true;
   control.mouse.startTime = Date.now();
-}
+};
 
-function mouseUp (e){
+const mouseUp = e => {
   control.mouse.endX = e.clientX;
   control.mouse.endY = e.clientY;
   control.mouse.isDown = false;
   control.mouse.endTime = Date.now();
-}
+};
 
 control.mouse = {
   startX: undefined,

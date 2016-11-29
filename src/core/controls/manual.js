@@ -14,6 +14,20 @@ function createMoveCommand(x, y, gameObjects){
   };
 }
 
+function createAttackCommand(gameObjects){
+  return {
+    execute: function(){
+      gameObjects.forEach(a => {
+        const collisions = a.body.collisions;
+        if (! collisions.length) return;
+        collisions.forEach(b => {
+          b.other.userData.inflictDamage(a);
+        });
+      });
+    }
+  };
+}
+
 const manual = {
   targets: [],
 
@@ -30,11 +44,25 @@ const manual = {
     if (keys[39]) x += -1;
     if (keys[40]) y += 1;
     if (x || y) commands.push(createMoveCommand(x, y, this.targets));
+    commands.push(createAttackCommand(this.targets));
     commands.forEach(c => c.execute());
   },
 
   start: function(){
     controls.start();
+  },
+
+  remove: function(gameObject){
+    for (let i = 0; i < this.targets.length; i++){
+      if (this.targets[i].id === gameObject.id){
+        this.targets.splice(i, 1);
+        break;
+      }
+    }
+  },
+  update: function(){},
+  _destroy: function(gameObject){
+    this.remove(gameObject);
   }
 };
 

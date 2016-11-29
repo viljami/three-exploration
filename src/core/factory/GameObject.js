@@ -29,7 +29,13 @@ export default function GameObject(x, y, r, data){
   }
 
   this.healthBar = graphics.createUIComponent('healthBar', this);
+  this.inflictDamageTime = 0;
+  this.components = [];
 }
+
+GameObject.prototype.addComponent = function(c){
+  this.components.push(c);
+};
 
 GameObject.prototype.move = function(x, y){
   const v = this.body.velocity;
@@ -43,9 +49,13 @@ GameObject.prototype.move = function(x, y){
 GameObject.prototype.update = function(){
   if (this.sensor) this.sensor.position.copy(this.body.position);
   this.graphics.update(this.body.position.x, this.body.position.y, this.body.r);
+  this.components.forEach(o => o.update(this));
 };
 
 GameObject.prototype.inflictDamage = function(gameObject){
+  const now = Date.now();
+  if (now - this.inflictDamageTime < 100) return 0;
+  this.inflictDamageTime = now;
   return this.health -= gameObject.damage;
 };
 
@@ -54,6 +64,7 @@ GameObject.prototype._destroy = function(){
   graphics.remove(this.graphics);
   graphics.removeUIComponent(this.healthBar);
   if (this.sensor) physics.remove(this.sensor);
+  this.components.forEach(o => o._destroy(this));
 };
 
 GameObject.prototype.isAlive = function(){ return this.health > 0; };

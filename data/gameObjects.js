@@ -3,7 +3,7 @@
 
 export default {
   human: {
-    color: 'rgba(0,255,0,0.5)', health: 100, armor: 10, damage: 20, topSpeed: 2,
+    color: 'rgba(0,150,0,0.5)', health: 100, armor: 10, damage: 20, topSpeed: 2,
     perception: 0, r: 5
   },
   zombie: {

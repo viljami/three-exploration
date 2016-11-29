@@ -105,9 +105,18 @@ Attack.prototype.isLosingFocus = function(){
 };
 
 export default function ZombieAI(gameObject) {
+  this.gameObject = gameObject;
   this.state = new Coma(gameObject);
 }
 
 ZombieAI.prototype.update = function(){
   this.state = this.state.update();
+};
+
+ZombieAI.prototype._destroy = function(){
+  this.isDestroyed = true;
+  this.state = undefined;
+  randomControl.remove(this.gameObject);
+  homingControl.remove(this.gameObject);
+  this.gameObject = undefined;
 };
