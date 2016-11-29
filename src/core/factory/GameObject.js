@@ -10,7 +10,7 @@ const getGroup = gameObject => gameObject.id;
 
 export default function GameObject(x, y, r, data){
   this.id = getId();
-  this.body = physics.create(x, y, data.r || r);
+  this.body = physics.create(x, y, data.r || r, data.isStatic, data.isSensor);
   this.body.userData = this;
   this.body.group = getGroup(this);
   this.graphics = graphics.create(x, y, r, data.color);
@@ -43,7 +43,7 @@ GameObject.prototype.update = function(){
 };
 
 GameObject.prototype.inflictDamage = function(gameObject){
-  this.health -= gameObject.damage;
+  return this.health -= gameObject.damage;
 };
 
 GameObject.prototype._destroy = function(){

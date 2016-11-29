@@ -71,6 +71,12 @@ function Attack (gameObject, targetBody){
   this.gameObject.graphics.color = 'rgba(75,0,0,0.7)';
   randomControl.remove(this.gameObject);
   homingControl.add(this.gameObject, this.targetBody);
+
+  this.gameObject.sensor.collisions.forEach(o => {
+    if (o.other.userData.type === 'zombie'){
+      o.other.userData.sensor.collisions.push(o);
+    }
+  });
 }
 
 Attack.prototype.update = function(){
@@ -99,8 +105,7 @@ Attack.prototype.isLosingFocus = function(){
 };
 
 export default function ZombieAI(gameObject) {
-  this.gameObject = gameObject;
-  this.state = new Coma(this.gameObject);
+  this.state = new Coma(gameObject);
 }
 
 ZombieAI.prototype.update = function(){

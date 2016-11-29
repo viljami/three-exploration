@@ -1,8 +1,8 @@
 
 'use strict';
 
-import Vec from './Vec';
-
 export default {
-  Vec
+  zombiesKilled: 0,
+  died: 0,
+
 };

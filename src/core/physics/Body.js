@@ -27,6 +27,6 @@ Body.prototype.removeGroup = function(group){
 };
 
 Body.prototype.hasGroup = function(group){
-  return !! this.groups.find(s => s === group);
+  return this.groups.indexOf(group) !== -1;
 };
 

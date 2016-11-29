@@ -2,18 +2,16 @@
 'use strict';
 
 import GameObject from './GameObject';
+import config from '../config';
 
-export default {
+const gameObjects = config.gameObjects;
+const isNumber = isFinite;
+
+const factory = {
   objects: [],
 
-  setData: function(data){
-    this.data = data;
-    this.types = Object.keys(data)
-    .reduce((a, b) => (a[b.toUpperCase()] = b) && a, {});
-  },
-
   create: function(x, y, r, type){
-    const gameObjectData = this.data[type];
+    const gameObjectData = gameObjects[type];
     if (! gameObjectData) throw new Error('No such GameObject type: ', type);
     const o = new GameObject(x, y, r, gameObjectData);
     o.type = type;
@@ -21,19 +19,23 @@ export default {
     return o;
   },
 
-  remove: function(gameObject){
-
-    if (isFinite(gameObject)){ // Number
-      this.objects[gameObject]._destroy();
-      return this.objects.splice(gameObject, 1);
+  remove: function(o){
+    if (isNumber(o)){
+      this.objects[o]._destroy();
+      return this.objects.splice(o, 1);
     }
 
-    gameObject._destroy();
+    o._destroy();
 
     for (let i = 0; i < this.objects.length; i++){
-      if (this.objects[i] === gameObject){
+      if (this.objects[i] === o){
         return this.objects.splice(i, 1);
       }
     }
   }
 };
+
+factory.types = Object.keys(gameObjects)
+.reduce((a, b) => (a[b.toUpperCase()] = b) && a, {});
+
+export default factory;

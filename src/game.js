@@ -17,15 +17,19 @@ let ais = [];
 Game.prototype.start = function(){
   graphics.createLayer();
 
-  const human = factory.create(100, 360, 10, 'human');
+  const human = factory.create(100, 560, 10, 'human');
   manualControl.enable(human);
 
-  for (let i = 0; i < 5; i++){
-    for (let j = 0; j < 5; j++){
+  for (let i = 0; i < 10; i++){
+    for (let j = 0; j < 10; j++){
       const zombie = factory.create(100 + i * 30, 200 + j * 30, 5, 'zombie');
       zombie.sensor.addGroup('zombie');
       ais.push(new ZombieAI(zombie));
     }
+  }
+
+  for (let i = 0; i < 10; i++){
+    factory.create(100 + i * 10, 500, 10, 'wall', true);
   }
 
   this.step = this.step.bind(this);
@@ -43,7 +47,7 @@ Game.prototype.step = function(){
   randomControl.step();
   physics.step();
 
-  for(let i = 0; i < factory.objects.length; i++){
+  for (let i = 0; i < factory.objects.length; i++){
     if (factory.objects[i].isAlive()) factory.objects[i].update();
     else factory.remove(i);
   }
