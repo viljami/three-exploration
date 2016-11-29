@@ -2,9 +2,8 @@
 'use strict';
 
 import App from './src/app';
-import data from './data/gameObjects';
 
-const app = new App({data});
+const app = new App();
 
 window.addEventListener('load', function load(){
   window.removeEventListener('load', load);

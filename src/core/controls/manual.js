@@ -14,14 +14,6 @@ function createMoveCommand(x, y, gameObjects){
   };
 }
 
-// function createMoveToCommand(x, y, gameObjects){
-//   return {
-//     execute: function(){
-//       gameObjects.forEach(a => a.moveTo(x, y));
-//     }
-//   };
-// }
-
 const manual = {
   targets: [],
 
@@ -33,9 +25,9 @@ const manual = {
     const commands = [];
     let x = 0;
     let y = 0;
-    if (keys[37]) x += -1;
+    if (keys[37]) x += 1;
     if (keys[38]) y += -1;
-    if (keys[39]) x += 1;
+    if (keys[39]) x += -1;
     if (keys[40]) y += 1;
     if (x || y) commands.push(createMoveCommand(x, y, this.targets));
     commands.forEach(c => c.execute());

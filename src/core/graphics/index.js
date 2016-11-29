@@ -3,6 +3,7 @@
 
 import GraphicsBody from './body';
 import requestAnimationFrame from './requestAnimationFrame';
+import FogOfWar from './Fogofwar';
 
 const PI2 = Math.PI * 2;
 let W = window.innerWidth;
@@ -19,6 +20,10 @@ const graphics = {
   layers: [],
   objects: [],
   cameraTarget: undefined,
+
+  addFog: function(radius){
+    this.fog = new FogOfWar(radius);
+  },
 
   createLayer: function(parentElement = document.body){
     const canvas = document.createElement('canvas');
@@ -37,14 +42,23 @@ const graphics = {
       this.cameraTarget || {x: 0, y: 0}
     );
 
+    const centerX1 = this.cameraTarget.x - this.fog.r;
+    const centerX2 = this.cameraTarget.x + this.fog.r;
+    const centerY1 = this.cameraTarget.y - this.fog.r;
+    const centerY2 = this.cameraTarget.y + this.fog.r;
     this.objects.forEach(a => {
-      ctx.fillStyle = a.color;
-      ctx.beginPath();
-      ctx.arc(cameraCorner.x - a.x, cameraCorner.y + a.y, a.r, 0, PI2);
-      // ctx.arc(a.x, a.y, a.r, 0, PI2);
-      ctx.fill();
-      ctx.stroke();
+      if ((a.x > centerX1 && a.x < centerX2) &&
+        (a.y > centerY1 && a.y < centerY2)){
+        ctx.fillStyle = a.color;
+        ctx.beginPath();
+        ctx.arc(cameraCorner.x - a.x, cameraCorner.y + a.y, a.r, 0, PI2);
+        // ctx.arc(a.x, a.y, a.r, 0, PI2);
+        ctx.fill();
+        ctx.stroke();
+      }
     });
+
+    this.fog.draw(ctx);
   },
 
   setCameraTarget: function(graphicsObject){

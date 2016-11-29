@@ -22,19 +22,20 @@ Game.prototype.start = function(){
 
   for (let i = 0; i < 10; i++){
     for (let j = 0; j < 10; j++){
-      const zombie = factory.create(100 + i * 30, 200 + j * 30, 5, 'zombie');
+      const zombie = factory.create(100 + i * 60, 200 + j * 30, 5, 'zombie');
       zombie.sensor.addGroup('zombie');
       ais.push(new ZombieAI(zombie));
     }
   }
 
   for (let i = 0; i < 10; i++){
-    factory.create(100 + i * 10, 500, 10, 'wall', true);
+    factory.create(100 + i * 50, 500 +i * 60, 10, 'wall', true);
   }
 
   this.step = this.step.bind(this);
   this.stepInterval = setInterval(this.step, 1000 / 60);
 
+  graphics.addFog(200);
   graphics.setCameraTarget(human.graphics);
   graphics.start();
   manualControl.start();
