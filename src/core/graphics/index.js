@@ -5,6 +5,8 @@ import GraphicsBody from './body';
 import requestAnimationFrame from './requestAnimationFrame';
 
 const PI2 = Math.PI * 2;
+let W = window.innerWidth;
+let H = window.innerHeight;
 
 function getCameraUpperLeftCorner(target){
   return {
@@ -21,23 +23,21 @@ const graphics = {
   createLayer: function(parentElement = document.body){
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
     parentElement.appendChild(canvas);
     this.layers.push({canvas, context});
   },
 
   draw: function(){
     const ctx = this.layers[0].context;
-    const W = window.innerWidth;
-    const H = window.innerHeight;
+
     ctx.clearRect(0, 0, W, H);
     const cameraCorner = getCameraUpperLeftCorner(
       this.cameraTarget || {x: 0, y: 0}
     );
 
     this.objects.forEach(a => {
-      // if (isOut(a, cameraCorner)) return;
       ctx.fillStyle = a.color;
       ctx.beginPath();
       ctx.arc(cameraCorner.x - a.x, cameraCorner.y + a.y, a.r, 0, PI2);
@@ -76,5 +76,14 @@ const graphics = {
 
   stop: function(){ this.isRunning = false; }
 };
+
+window.addEventListener('resize', function resize(){
+  W = window.innerWidth;
+  H = window.innerHeight;
+  graphics.layers.forEach(o => {
+    o.canvas.width = W;
+    o.canvas.height = H;
+  });
+});
 
 export default graphics;
