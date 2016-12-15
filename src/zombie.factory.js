@@ -6,7 +6,7 @@ import factory from './core/factory/';
 
 export default {
   create: function(x, y, type){
-    const z = factory.create(x, y, 5, type);
+    const z = factory.create(x, y, type);
     z.sensor.addGroup('zombie');
     z.addComponent(new ZAI(z));
   },

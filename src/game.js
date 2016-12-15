@@ -12,7 +12,7 @@ import zFactory from './zombie.factory';
 export default function Game(){}
 
 Game.prototype.start = function(){
-  const human = factory.create(100, 560, 10, 'human');
+  const human = factory.create(100, 560, 'human');
   manualControl.enable(human);
   human.addComponent(manualControl);
 
@@ -27,9 +27,11 @@ Game.prototype.start = function(){
     y = 100;
   }
 
-  for (let i = 0; i < 10; i++){
-    factory.create(100 + i * 50, 500 +i * 60, 10, 'wall', true);
-  }
+  // should be on map
+  // for (let i = 0; i < 10; i++){
+  //   factory.create(100 + i * 50, 500 +i * 60, 'wall', true);
+  // }
 
   core.start(human);
 };
+

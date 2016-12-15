@@ -3,6 +3,7 @@
 
 import controls from './controls';
 
+const mouse = controls.keyboard;
 const keyboard = controls.keyboard;
 const keys = keyboard.keys;
 
@@ -14,16 +15,10 @@ function createMoveCommand(x, y, gameObjects){
   };
 }
 
-function createAttackCommand(gameObjects){
+function createAttackCommand(gameObjects, direction){
   return {
     execute: function(){
-      gameObjects.forEach(a => {
-        const collisions = a.body.collisions;
-        if (! collisions.length) return;
-        collisions.forEach(b => {
-          b.other.userData.inflictDamage(a);
-        });
-      });
+      gameObjects.forEach(a => a.attack(direction));
     }
   };
 }
@@ -39,12 +34,16 @@ const manual = {
     const commands = [];
     let x = 0;
     let y = 0;
-    if (keys[37]) x += 1;
-    if (keys[38]) y += -1;
-    if (keys[39]) x += -1;
-    if (keys[40]) y += 1;
+    if (keys[37]) x += -1;
+    if (keys[38]) y += 1;
+    if (keys[39]) x += 1;
+    if (keys[40]) y += -1;
     if (x || y) commands.push(createMoveCommand(x, y, this.targets));
-    commands.push(createAttackCommand(this.targets));
+
+    if (keys[32]){
+      commands.push(createAttackCommand(this.targets, mouse));
+    }
+
     commands.forEach(c => c.execute());
   },
 
@@ -60,7 +59,9 @@ const manual = {
       }
     }
   },
+
   update: function(){},
+
   _destroy: function(gameObject){
     this.remove(gameObject);
   }

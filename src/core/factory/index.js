@@ -10,10 +10,10 @@ const isNumber = isFinite;
 const factory = {
   objects: [],
 
-  create: function(x, y, r, type){
+  create: function(x, y, type){
     const gameObjectData = gameObjects[type];
     if (! gameObjectData) throw new Error('No such GameObject type: ', type);
-    const o = new GameObject(x, y, r, gameObjectData);
+    const o = new GameObject(x, y, gameObjectData);
     o.type = type;
     this.objects.push(o);
     return o;

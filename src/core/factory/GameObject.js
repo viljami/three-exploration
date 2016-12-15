@@ -8,15 +8,15 @@ let id = 0;
 const getId = () => ++id;
 const getGroup = gameObject => gameObject.id;
 
-export default function GameObject(x, y, r, data){
+export default function GameObject(x, y, data){
   this.id = getId();
-  this.body = physics.create(x, y, data.r || r, data.isStatic, data.isSensor);
+  this.body = physics.create(x, y, data.r, data.isStatic, data.isSensor);
+  this.graphics = graphics.create(x, y, data.r, data.color);
+
+  this.data = Object.assign({}, data);
+
   this.body.userData = this;
   this.body.group = getGroup(this);
-  this.graphics = graphics.create(x, y, r, data.color);
-  this.weapons = data.weapons || [
-    {type:'fists', damage: 10, isPiercing: false, isSpread: false}
-  ];
 
   Object.keys(data).forEach(key => this[key] = data[key]);
   this.maxHealth = this.health;
@@ -57,6 +57,12 @@ GameObject.prototype.inflictDamage = function(gameObject){
   if (now - this.inflictDamageTime < 100) return 0;
   this.inflictDamageTime = now;
   return this.health -= gameObject.damage;
+};
+
+GameObject.prototype.attack = function(direction){
+  const weapon = this.weapons[this.activeWeaponIndex];
+
+
 };
 
 GameObject.prototype._destroy = function(){

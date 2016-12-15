@@ -12,6 +12,7 @@
   "license": "UNLICENCED",
   "dependencies": {
     "matter-js": "^0.11.1",
+    "three.js": "^0.77.1",
     "victor": "^1.1.0"
   },
   "devDependencies": {

@@ -36,8 +36,8 @@ control.keyboard = {
 };
 
 const mouseDown = e => {
-  control.mouse.startX = e.clientX;
-  control.mouse.startY = e.clientY;
+  control.mouse.x = control.mouse.startX = e.clientX;
+  control.mouse.y = control.mouse.startY = e.clientY;
   control.mouse.isDown = true;
   control.mouse.startTime = Date.now();
 };
@@ -50,6 +50,8 @@ const mouseUp = e => {
 };
 
 control.mouse = {
+  x: undefined,
+  y: undefined,
   startX: undefined,
   startY: undefined,
   endX: undefined,
