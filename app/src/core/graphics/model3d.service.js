@@ -18,14 +18,28 @@ mtlLoader.setPath('./');
 
 const loader = new THREE.OBJLoader();
 const noop = function(){};
+const mtlHash = {};
+
+function getMtl (url){
+  return new Promise(function(resolve, reject){
+    mtlLoader.load(url, function(mtl){
+      mtl.preload();
+      resolve(mtl);
+    }, noop, reject);
+  });
+}
 
 export default {
   load: function(url, onProgress){
     return new Promise(function(resolve, reject){
-      mtlLoader.load(url.replace('.obj', '.mtl'), function(mtl){
-        mtl.preload();
-        loader.setMaterials(mtl);
+      const mtlUrl = url.replace('.obj', '.mtl');
+      if (! mtlHash[mtlUrl]) mtlHash[mtlUrl] = getMtl(mtlUrl);
+      console.log('mtl 1', mtlHash);
 
+      mtlHash[mtlUrl]
+      .then(mtl => {
+        loader.setMaterials(mtl);
+        console.log('mtl 2');
         // load: function ( url, onLoad, onProgress, onError )
         loader.load(url, function (data){
           data.rotation.x = Math.PI / 2;
