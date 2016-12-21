@@ -58,7 +58,7 @@ GameObject.prototype.update = function(){
   if (this.sensor) this.sensor.position.copy(this.body.position);
   const body = this.body;
   const v = body.velocity;
-  let rotation = v.x === 0 ? 0 : PI2  - Math.atan(v.x / v.y);
+  let rotation = v.x === 0 ? 0 : PI2 - Math.atan(v.x / v.y);
   this.graphics.update(
     body.position.x,
     body.position.y,

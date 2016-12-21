@@ -29,8 +29,8 @@ GraphicsBody.prototype.update = function (x, y, r, rotation){
 };
 
 GraphicsBody.prototype.setColor = function (c){
-  if (! materials[c]) materials[c] = new THREE.MeshBasicMaterial({color: c});
-  this.mesh.material = materials[c];
+  // if (! materials[c]) materials[c] = new THREE.MeshBasicMaterial({color: c});
+  // this.mesh.material = materials[c];
 };
 
 function Graphics(){
@@ -43,7 +43,7 @@ function Graphics(){
   var ambient = new THREE.AmbientLight( 0x999999 );
   this.scene.add(ambient);
 
-  this.spotLight = new THREE.SpotLight(0xffffff, 2, 500, Math.PI);
+  this.spotLight = new THREE.SpotLight(0xffffff, 1, CAMERA_Z + 4, Math.PI);
   this.scene.add(this.spotLight);
 
   const spotLightHelper = new THREE.SpotLightHelper(this.spotLight);
@@ -79,17 +79,12 @@ Graphics.prototype.setCameraTarget = function(graphicsObject){
 Graphics.prototype.create = function(x,y,r,c, modelName){
   const o = new GraphicsBody(x,y,r,c);
 
-  if (! materials[c]){
-    materials[c] = new THREE.MeshLambertMaterial({color: c});
-  }
-  const material = materials[c];
-
   if (modelName){
     return model3d.load('./assets/' + modelName + '.obj')
     .then(obj => {
-      obj.traverse(child => {
-        if (child instanceof THREE.Mesh) child.material = material;
-      });
+      // obj.traverse(child => {
+        // if (child instanceof THREE.Mesh) child.material = material;
+      // });
 
       this.scene.add(obj);
       o.mesh = obj;
@@ -98,6 +93,11 @@ Graphics.prototype.create = function(x,y,r,c, modelName){
       return o;
     });
   }
+
+  if (! materials[c]){
+    materials[c] = new THREE.MeshLambertMaterial({color: c});
+  }
+  const material = materials[c];
 
   const geometry = new THREE.SphereGeometry(r);
   const mesh = new THREE.Mesh(geometry, material);
