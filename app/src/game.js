@@ -13,19 +13,24 @@ export default function Game(){}
 Game.prototype.start = function(){
   return core.preLoadResoureces()
   .then(function(){
+    const humanX = 100;
+    const humanY = 560;
     const gameObjects = [
-      factory.create(100, 560, 'human')
+      factory.create(humanX, humanY, 'human')
     ];
 
-    let x = 100;
-    let y = 100;
-    for (let i = 0; i < 10; i++){
-        x += 15 + rand(100);
-      for (let j = 0; j < 10; j++){
+    let x = humanX - 300;
+    let y = humanY - 400;
+    for (let i = 0; i < 13; i++){
+      x += 15 + rand(100);
+      for (let j = 0; j < 13; j++){
         y += 15 + rand(100);
-        gameObjects.push(zFactory.create(x + rand(20), y, 'zombie'));
+        if (x < humanX - 90 || x > humanX + 90 ||
+            y < humanY - 90 || y > humanY + 90){
+          gameObjects.push(zFactory.create(x + rand(20), y, 'zombie'));
+        }
       }
-      y = 100;
+      y = humanY - 400;
     }
 
     return Promise.all(gameObjects)
