@@ -9,7 +9,9 @@ export default {
   zombie: {
     color: 0xff0000, health: 100, armor: 5, damage: 10,
     topSpeed: 0.5,
-    perception: 100, r: 7
+    perception: 100,
+    r: 7,
+    model: 'Steve'
   },
   zombieBoss: {
     color: 0xff0000, health: 200, armor: 20, damage: 50, topSpeed: 1,

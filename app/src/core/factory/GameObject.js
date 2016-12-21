@@ -8,31 +8,37 @@ let id = 0;
 const getId = () => ++id;
 const getGroup = gameObject => gameObject.id;
 
-export default function GameObject(x, y, data){
+export default function GameObject(){
   this.id = getId();
-  this.body = physics.create(x, y, data.r, data.isStatic, data.isSensor);
+}
 
-  this.graphics = graphics.create(x, y, data.r, data.color, data.model);
-
+GameObject.prototype.init = function(x, y, data){
   this.data = Object.assign({}, data);
 
-  this.body.userData = this;
-  this.body.group = getGroup(this);
+  return Promise.all([
+    graphics.create(x, y, data.r, data.color, data.model)
+  ])
+  .then(results => {
+    this.graphics = results[0];
+    this.body = physics.create(x, y, data.r, data.isStatic, data.isSensor);
+    this.body.userData = this;
+    this.body.group = getGroup(this);
 
-  Object.keys(data).forEach(key => this[key] = data[key]);
-  this.maxHealth = this.health;
+    Object.keys(data).forEach(key => this[key] = data[key]);
+    this.maxHealth = this.health;
 
-  if (this.perception){
-    const group = getGroup(this);
-    this.sensor = physics.create(x, y, this.perception, false, true);
-    this.sensor.addGroup(group);
-    this.body.addGroup(group);
-  }
+    if (this.perception){
+      const group = getGroup(this);
+      this.sensor = physics.create(x, y, this.perception, false, true);
+      this.sensor.addGroup(group);
+      this.body.addGroup(group);
+    }
 
-  this.healthBar = graphics.createUIComponent('healthBar', this);
-  this.inflictDamageTime = 0;
-  this.components = [];
-}
+    this.healthBar = graphics.createUIComponent('healthBar', this);
+    this.inflictDamageTime = 0;
+    this.components = [];
+  });
+};
 
 GameObject.prototype.addComponent = function(c){
   this.components.push(c);

@@ -13,10 +13,14 @@ const factory = {
   create: function(x, y, type){
     const gameObjectData = gameObjects[type];
     if (! gameObjectData) throw new Error('No such GameObject type: ', type);
-    const o = new GameObject(x, y, gameObjectData);
+    const o = new GameObject();
     o.type = type;
-    this.objects.push(o);
-    return o;
+
+    return o.init(x, y, gameObjectData)
+    .then(() => {
+      this.objects.push(o);
+      return o;
+    });
   },
 
   remove: function(o){

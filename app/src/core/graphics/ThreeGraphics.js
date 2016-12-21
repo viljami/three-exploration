@@ -77,7 +77,6 @@ Graphics.prototype.setCameraTarget = function(graphicsObject){
 
 Graphics.prototype.create = function(x,y,r,c, modelName){
   const o = new GraphicsBody(x,y,r,c);
-  let geometry;
 
   if (! materials[c]){
     materials[c] = new THREE.MeshLambertMaterial({color: c});
@@ -85,31 +84,30 @@ Graphics.prototype.create = function(x,y,r,c, modelName){
   const material = materials[c];
 
   if (modelName){
-    const obj = model3d.load('./assets/' + modelName + '.obj');
+    return model3d.load('./assets/' + modelName + '.obj')
+    .then(obj => {
+      obj.traverse(child => {
+        if (child instanceof THREE.Mesh) child.material = material;
+      });
 
-    obj.traverse(function(child){
-      if (child instanceof THREE.Mesh) child.material = material;
+      this.scene.add(obj);
+      o.mesh = obj;
+      this.objects.push(o);
+
+      return o;
     });
-
-    this.scene.add(obj);
-    o.mesh = obj;
-    this.objects.push(o);
-    return o;
-    // mesh.children[0].material = material;
-  } else {
-    geometry = new THREE.SphereGeometry(r);
   }
 
+  const geometry = new THREE.SphereGeometry(r);
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.x = x / SCALE_X;
   mesh.position.y = y / SCALE_Y;
   mesh.position.z = 0;
   this.scene.add(mesh);
-
   o.mesh = mesh;
   this.objects.push(o);
 
-  return o;
+  return Promise.resolve(o);
 };
 
 Graphics.prototype.remove = function(graphic){
