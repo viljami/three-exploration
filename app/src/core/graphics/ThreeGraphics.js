@@ -6,6 +6,7 @@ import model3d from './model3d.service';
 
 // import HealthBar from './HealthBar';
 
+const PI2 = Math.PI / 2;
 const CAMERA_Z = 200;
 const SCALE_X = 1;
 const SCALE_Y = 1;
@@ -21,10 +22,10 @@ function GraphicsBody (mesh){
   this.mesh = mesh;
 }
 
-GraphicsBody.prototype.update = function (x, y, r, c){
+GraphicsBody.prototype.update = function (x, y, r, rotation){
   this.mesh.position.set(x / SCALE_X, y / SCALE_Y, 0);
+  this.mesh.rotation.set(PI2, rotation, 0);
   this.r = r;
-  if (c) this.setColor(c);
 };
 
 GraphicsBody.prototype.setColor = function (c){

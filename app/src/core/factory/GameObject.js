@@ -4,6 +4,7 @@
 import physics from '../physics/';
 import graphics from '../graphics/';
 
+const PI2 = Math.PI / 2;
 let id = 0;
 const getId = () => ++id;
 const getGroup = gameObject => gameObject.id;
@@ -55,7 +56,15 @@ GameObject.prototype.move = function(x, y){
 
 GameObject.prototype.update = function(){
   if (this.sensor) this.sensor.position.copy(this.body.position);
-  this.graphics.update(this.body.position.x, this.body.position.y, this.body.r);
+  const body = this.body;
+  const v = body.velocity;
+  let rotation = v.x === 0 ? 0 : PI2  - Math.atan(v.x / v.y);
+  this.graphics.update(
+    body.position.x,
+    body.position.y,
+    body.r,
+    rotation
+  );
   this.components.forEach(o => o.update(this));
 };
 

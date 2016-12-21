@@ -4,6 +4,8 @@
 import Vec from '../Vec';
 import Body from './Body';
 
+const FRICTION = 0.5;
+
 const abs = Math.abs;
 function setOrbit(pos1, pos2, direction, distance){
   const v = direction.clone();
@@ -19,8 +21,8 @@ function setOrbit(pos1, pos2, direction, distance){
 function move(body){
   if (! body.velocity.x && ! body.velocity.y) return;
   body.position.add(body.velocity);
-  body.velocity.x = 0;
-  body.velocity.y = 0;
+  body.velocity.x *= FRICTION;
+  body.velocity.y *= FRICTION;
 }
 
 const isSameGroup = (a, b) => {
