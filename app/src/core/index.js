@@ -7,6 +7,7 @@ import randomControl from './controls/random';
 
 import physics from './physics/';
 import graphics from './graphics/';
+import model3d from './graphics/model3d.service';
 
 import factory from './factory/';
 
@@ -29,7 +30,12 @@ function update(){
 export default {
   Vec,
 
+  preLoadResoureces: function(onProgress){
+    return model3d.load('./assets/Steve.obj', onProgress);
+  },
+
   start: function(human){
+
     graphics.createLayer();
     graphics.addFog(100);
     graphics.setCameraTarget(human.graphics);

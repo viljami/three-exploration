@@ -4,7 +4,7 @@
 export default {
   human: {
     color: 0x00ff00, health: 100, armor: 10, damage: 20, topSpeed: 2,
-    perception: 0, r: 5
+    perception: 0, r: 5, model: 'Steve'
   },
   zombie: {
     color: 0xff0000, health: 100, armor: 5, damage: 10,

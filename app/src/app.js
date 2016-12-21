@@ -9,5 +9,6 @@ export default function App (options){
 }
 
 App.prototype.start = function (){
-  this.game.start();
+  console.log('Starting app...');
+  this.game.start().then(() => console.log('App started.'));
 };

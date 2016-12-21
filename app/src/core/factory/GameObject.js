@@ -11,7 +11,8 @@ const getGroup = gameObject => gameObject.id;
 export default function GameObject(x, y, data){
   this.id = getId();
   this.body = physics.create(x, y, data.r, data.isStatic, data.isSensor);
-  this.graphics = graphics.create(x, y, data.r, data.color);
+
+  this.graphics = graphics.create(x, y, data.r, data.color, data.model);
 
   this.data = Object.assign({}, data);
 

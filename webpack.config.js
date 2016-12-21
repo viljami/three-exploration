@@ -4,10 +4,13 @@
 const path = require('path');
 
 module.exports = {
-  entry: './index.js',
+  entry: './app/index.js',
   output: {
-    path: path.join(__dirname, 'src'),
+    path: path.join(__dirname, 'app/src'),
     filename: 'bundle.js'
+  },
+  devServer: {
+    contentBase: './app'
   },
   module: {
     loaders: [{

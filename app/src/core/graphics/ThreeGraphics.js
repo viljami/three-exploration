@@ -1,7 +1,9 @@
 
 'use strict';
 
-import THREE from '../../../node_modules/three/three.min';
+import THREE from './three.service';
+import model3d from './model3d.service';
+
 // import HealthBar from './HealthBar';
 
 const CAMERA_Z = 200;
@@ -37,6 +39,9 @@ function Graphics(){
   this.uiComponents = [];
   this.objects = [];
 
+  var ambient = new THREE.AmbientLight( 0x999999 );
+  this.scene.add(ambient);
+
   this.spotLight = new THREE.SpotLight(0xffffff, 2, 500, Math.PI);
   this.scene.add(this.spotLight);
 
@@ -70,11 +75,31 @@ Graphics.prototype.setCameraTarget = function(graphicsObject){
   this.cameraTarget = graphicsObject;
 };
 
-Graphics.prototype.create = function(x,y,r,c){
+Graphics.prototype.create = function(x,y,r,c, modelName){
   const o = new GraphicsBody(x,y,r,c);
-  const geometry = new THREE.SphereGeometry(r);
-  if (! materials[c]) materials[c] = new THREE.MeshLambertMaterial({color: c});
+  let geometry;
+
+  if (! materials[c]){
+    materials[c] = new THREE.MeshLambertMaterial({color: c});
+  }
   const material = materials[c];
+
+  if (modelName){
+    const obj = model3d.load('./assets/' + modelName + '.obj');
+
+    obj.traverse(function(child){
+      if (child instanceof THREE.Mesh) child.material = material;
+    });
+
+    this.scene.add(obj);
+    o.mesh = obj;
+    this.objects.push(o);
+    return o;
+    // mesh.children[0].material = material;
+  } else {
+    geometry = new THREE.SphereGeometry(r);
+  }
+
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.x = x / SCALE_X;
   mesh.position.y = y / SCALE_Y;
