@@ -1,7 +1,7 @@
 {
-  "name": "climb",
+  "name": "three-js test",
   "version": "0.0.0",
-  "description": "Climb it",
+  "description": "3D it",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
